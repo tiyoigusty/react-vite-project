@@ -12,10 +12,10 @@ import { ImHome } from "react-icons/im";
 import { MdAccountCircle } from "react-icons/md";
 import { RiLogoutBoxFill, RiUserFollowFill } from "react-icons/ri";
 
-export function SideBar() {
+export function LeftBar() {
   return (
     <>
-      <Container w="250px" h="480px" display="flex" flexDirection="column" justifyContent="space-between">
+      <Container w="250px" h="100vh" display="flex" flexDirection="column" justifyContent="space-between">
         <Box>
           <Box>
             <Heading color="blue.500" fontSize="50px">
@@ -90,6 +90,7 @@ export function SideBar() {
           gap="10px"
           fontSize="15px"
           color="white"
+          mb="20px"
         >
           <RiLogoutBoxFill />
           Logout

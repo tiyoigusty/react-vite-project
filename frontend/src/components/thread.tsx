@@ -60,11 +60,11 @@ export function Thread({
             <Text display="flex" alignItems="center" gap="5px" fontSize="14px">
               {isLiked ? (
                 <>
-                  <FaHeart color="red" onClick={() => setIsLiked(false)}/> {like} Likes
+                  <FaHeart color="red" cursor="pointer" onClick={() => setIsLiked(false)}/> {like} Likes
                 </>
               ) : (
                 <>
-                  <FaHeart onClick={() => setIsLiked(true)}/> {like} Likes
+                  <FaHeart cursor="pointer" onClick={() => setIsLiked(true)}/> {like} Likes
                 </>
               )}
             </Text>
