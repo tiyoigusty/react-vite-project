@@ -1,0 +1,35 @@
+import { PrismaClient } from "@prisma/client";
+import { UserJWTPayload } from "../../types/user";
+
+const prisma = new PrismaClient();
+
+async function find(search: string) {
+  try {
+    return await prisma.user.findMany({
+      where: {username: {contains: search, mode: "insensitive"}}
+    });
+  } catch (error) {
+    throw new String(error);
+  }
+}
+
+// async function find(user: UserJWTPayload, search: string) {
+//   try {
+//     const users = await prisma.user.findMany();
+
+//     const follows = await prisma.follow.findMany({
+//       where: { follower: { id: user.id } },
+//     });
+
+//     return users.map((user) => {
+//       return follows.map((follow) => {
+//         if (user.id === follow.followedId) return { ...user, isFollowed: true };
+//         return { ...user, isFollowed: false };
+//       })[0];
+//     });
+//   } catch (error) {
+//     throw new String(error);
+//   }
+// }
+
+export default { find };

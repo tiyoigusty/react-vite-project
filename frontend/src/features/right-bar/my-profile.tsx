@@ -1,6 +1,17 @@
-import { Avatar, Box, Button, Container, Heading, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  Heading,
+  Text,
+} from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 export function MyProfile() {
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+
   return (
     <>
       <Container w="400px">
@@ -28,7 +39,7 @@ export function MyProfile() {
               ml="-260px"
               size="lg"
               border="2px solid rgb(40, 40, 40)"
-              src="https://images.pexels.com/photos/18581955/pexels-photo-18581955/free-photo-of-man-between-skyscrapers.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
+              src={currentUser.photoProfile}
             ></Avatar>
             <Button
               bg="blue.500"
@@ -46,14 +57,13 @@ export function MyProfile() {
           </Box>
           <Box pl="10px" mt="-5px">
             <Text fontSize="20px" fontWeight="bold">
-              Agik Gigih
+              {currentUser.fullName}
             </Text>
             <Text fontSize="12px" fontWeight="light">
-              @agikgigih98
+              {currentUser.username}
             </Text>
             <Text fontSize="14px" py="10px">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti,
-              commodi.
+              {currentUser.bio}
             </Text>
             <Text fontWeight="bold" fontSize="14px">
               2342 <span style={{ fontWeight: "normal" }}>Following</span> 3453{" "}

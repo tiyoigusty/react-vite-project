@@ -14,88 +14,83 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  username     String?
-  fullName     String?
-  email        String   @unique
+  id           Int     @id @default(autoincrement())
+  username     String
+  fullName     String
+  email        String  @unique
   password     String
   photoProfile String?
   bio          String?
-  createdBy    String?
-  updatedBy    String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
 
   threads   Thread[]
   replies   Reply[]
   likes     Like[]
-  following Following[] @relation("followingId")
-  followers Following[] @relation("followerId")
+  followeds Follow[] @relation("followed")
+  followers Follow[] @relation("follower")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@map("users")
 }
 
-model Following {
-  id        Int      @id @default(autoincrement())
-  followingId    Int?
-  followerId    Int?
+model Follow {
+  id         Int  @id @default(autoincrement())
+  followedId Int?
+  followerId Int?
+
+  followed User? @relation("followed", fields: [followedId], references: [id])
+  follower User? @relation("follower", fields: [followerId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  followings      User?    @relation("followingId", fields: [followingId], references: [id])
-  Followers      User?    @relation("followerId", fields: [followerId], references: [id])
-
-  @@map("followings")
+  @@map("follows")
 }
 
 model Thread {
-  id              Int      @id @default(autoincrement())
-  content         String
-  image           String?
-  numberOfReplies Int?
-  numberOfLikes   Int?
-  createdBy       String?
-  updatedBy       String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @default(now()) @updatedAt
-  userId          Int?
+  id      Int     @id @default(autoincrement())
+  content String
+  image   String?
+  userId  Int?
 
   user User? @relation(fields: [userId], references: [id])
 
   replies Reply[]
   likes   Like[]
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
   @@map("threads")
 }
 
 model Reply {
-  id        Int      @id @default(autoincrement())
-  content   String
-  image     String?
-  createdBy String
-  updatedBy String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  userId    Int?
-  threadId  Int?
+  id       Int     @id @default(autoincrement())
+  content  String
+  image    String?
+  userId   Int?
+  threadId Int?
 
   user   User?   @relation(fields: [userId], references: [id])
   thread Thread? @relation(fields: [threadId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@map("replies")
 }
 
 model Like {
-  id        Int      @id @default(autoincrement())
-  createdBy String
-  updatedBy String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  userId    Int?
-  threadId  Int?
+  id       Int  @id @default(autoincrement())
+  userId   Int?
+  threadId Int?
 
   user   User?   @relation(fields: [userId], references: [id])
   thread Thread? @relation(fields: [threadId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@map("likes")
 }

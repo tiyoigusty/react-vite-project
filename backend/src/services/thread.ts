@@ -7,9 +7,15 @@ const prisma = new PrismaClient();
 
 async function find() {
   try {
-    return await prisma.thread.findMany();
+    return await prisma.thread.findMany({
+      include: {
+        user: {
+          select: { id: true, fullName: true, username: true, photoProfile: true },
+        },
+      },
+    });
   } catch (error) {
-    return error;
+    throw new String(error);
   }
 }
 
@@ -19,36 +25,36 @@ async function findOne(id: number) {
       where: { id },
     });
 
-    if (!thread) return null;
+    if (!thread) throw new String("THREAD NOT FOUND!!");
     return thread;
   } catch (error) {
-    return error;
+    throw new String(error);
   }
 }
 
-async function create(dto: CreateThreadDTO) {
-  // validation with joi
-  const validate = createThreadSchema.validate(dto);
-  if (validate.error) {
-    return validate.error.message;
-  }
-
-  cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  });
-
-  const upload = await cloudinary.uploader.upload(dto.image, {
-    upload_preset:"circle",
-  });
-
+async function create(dto: CreateThreadDTO, userId: number) {
   try {
+    // validation with joi
+    const validate = createThreadSchema.validate(dto);
+    if (validate.error) {
+      throw new String(validate.error.message);
+    }
+
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+
+    const upload = await cloudinary.uploader.upload(dto.image, {
+      upload_preset: "circle",
+    });
+
     return await prisma.thread.create({
-      data: { ...dto, image: upload.secure_url },
+      data: { ...dto, userId, image: upload.secure_url },
     });
   } catch (error) {
-    return error;
+    throw new String(error);
   }
 }
 
@@ -70,7 +76,7 @@ async function update(id: number, dto: UpdatedThreadDTO) {
       data: { ...thread },
     });
   } catch (error) {
-    return error;
+    throw new String(error);
   }
 }
 
@@ -80,7 +86,7 @@ async function remove(id: number) {
       where: { id: Number(id) },
     });
   } catch (error) {
-    return error;
+    throw new String(error);
   }
 }
 

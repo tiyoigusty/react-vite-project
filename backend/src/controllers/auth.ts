@@ -23,5 +23,17 @@ async function register(req: Request, res: Response) {
   }
 }
 
+async function check(req: Request, res: Response) {
+  try {
+    const user = res.locals.user
 
-export default { login, register };
+    res.json(user);
+  } catch (error) {
+    res.json({
+      message: error,
+    });
+  }
+}
+
+
+export default { login, register, check };

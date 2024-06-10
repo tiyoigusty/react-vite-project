@@ -11,18 +11,18 @@ async function login(dto: LoginDTO) {
     // validation with joi
     const validate = loginSchema.validate(dto);
     if (validate.error) {
-      return validate.error.message;
+      throw new String (validate.error.message);
     }
 
     const user = await prisma.user.findUnique({
       where: { email: dto.email },
     });
     if (!user) {
-      throw new Error("USER NOT REGISTED!!");
+      throw new String("USER NOT REGISTED!!");
     }
     const isValidPassword = await bcrypt.compare(dto.password, user.password);
     if (!isValidPassword) {
-      throw new Error("USER NOT REGISTED!!");
+      throw new String("USER NOT REGISTED!!");
     }
 
     delete user.password;
@@ -33,12 +33,11 @@ async function login(dto: LoginDTO) {
 
     return {token, user}
   } catch (error) {
-    return error;
+    throw new String(error);
   }
 }
 
 async function register(dto: RegisterDTO) {
-  // validation with joi
   const validate = registerSchema.validate(dto);
 
   const salt = 10;
@@ -47,7 +46,7 @@ async function register(dto: RegisterDTO) {
   dto.password = hashedPassword;
 
   if (validate.error) {
-    return validate.error.message;
+    throw new String (validate.error.message);
   }
 
   try {
@@ -55,7 +54,7 @@ async function register(dto: RegisterDTO) {
       data: { ...dto },
     });
   } catch (error) {
-    return error;
+    throw new String(error);
   }
 }
 
