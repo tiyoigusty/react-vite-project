@@ -6,6 +6,8 @@ import UserController from "./controllers/user"
 import dotenv from "dotenv"
 import { upload } from "./middlewares/upload-file";
 import { authenticate } from "./middlewares/auth";
+import swaggerUI from "swagger-ui-express"
+import swaggerDoc from "../swagger/swagger-output.json"
 dotenv.config()
 
 const app = express();
@@ -18,6 +20,12 @@ app.use(express.json());
 app.use("/api/v1", routerv1);
 app.use("/api/v2", routerv2);
 app.use("/uploads", express.static("uploads"))
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc, {
+  explorer: true,
+  swaggerOptions: {
+    persistAuthorization: true
+  }
+}))
 
 app.get("/", (req: Request, res: Response) => {
   res.send("HELLO");

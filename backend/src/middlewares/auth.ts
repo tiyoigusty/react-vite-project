@@ -2,6 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 export function authenticate(req: Request, res: Response, next: NextFunction) {
+  /* 
+  #swagger.security = [{
+            "bearerAuth": []
+    }] 
+  */
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
