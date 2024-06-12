@@ -5,7 +5,7 @@ const doc = {
     title: 'Circle API Docs',
     description: 'Welcome to Circle API'
   },
-  host: 'localhost:5000',
+  host: 'https://react-vite-project-production.up.railway.app/api/v1',
   components: {
     "@schemas": {
         RegisterDTO: {
