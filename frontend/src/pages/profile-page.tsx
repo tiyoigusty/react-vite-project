@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
+import { Profile } from "../features/profile/components/profile";
 import { DevelopedBy } from "../features/right-bar/developed-by";
 import { MyProfile } from "../features/right-bar/my-profile";
 import { SuggestionTab } from "../features/right-bar/suggestion-tab";
 import { SideBar } from "../features/side-bar/side-bar";
-import { Search } from "../features/search/components/search";
 
 export function ProfilePage() {
   return (
@@ -13,7 +13,7 @@ export function ProfilePage() {
           <SideBar />
         </Box>
         <Box borderRight="1px solid grey" borderLeft="1px solid grey">
-          <Search />
+          <Profile />
         </Box>
         <Box>
           <MyProfile />

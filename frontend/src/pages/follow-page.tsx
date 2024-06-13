@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
+import { Follow } from "../features/follow/components/follow";
 import { DevelopedBy } from "../features/right-bar/developed-by";
 import { MyProfile } from "../features/right-bar/my-profile";
 import { SuggestionTab } from "../features/right-bar/suggestion-tab";
 import { SideBar } from "../features/side-bar/side-bar";
-import { Search } from "../features/search/components/search";
 
 export function FollowPage() {
   return (
@@ -13,7 +13,7 @@ export function FollowPage() {
           <SideBar />
         </Box>
         <Box borderRight="1px solid grey" borderLeft="1px solid grey">
-          <Search />
+          <Follow />
         </Box>
         <Box>
           <MyProfile />

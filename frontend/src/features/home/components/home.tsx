@@ -8,7 +8,7 @@ export function Home() {
 
   return (
     <>
-      <Box w="600px">
+      <Box w="600px" borderRight="1px solid grey" borderLeft="1px solid grey">
         <Post />
         {threads?.map((thread) => <ThreadCard thread={thread} /> )}
       </Box>

@@ -9,13 +9,13 @@ export function HomePage() {
   return (
     <>
       <Box display="flex" justifyContent="center">
-        <Box>
+        <Box position="fixed" left="0">
           <SideBar />
         </Box>
-        <Box borderRight="1px solid grey" borderLeft="1px solid grey">
+        <Box position="absolute" left="250">
           <Home />
         </Box>
-        <Box>
+        <Box position="absolute" left="850">
           <MyProfile />
           <SuggestionTab />
           <DevelopedBy />

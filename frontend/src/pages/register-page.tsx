@@ -1,7 +1,14 @@
 import { Box, Heading, Link, Text } from "@chakra-ui/react";
 import { RegisterForm } from "../features/auth/components/register";
+import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
+  const navigate = useNavigate();
+  
+  function login() {
+    navigate("/auth/login");
+  }
+
   return (
     <>
     <Box display="flex" justifyContent="center">
@@ -11,7 +18,7 @@ function RegisterPage() {
         </Heading>
         <Heading fontSize="30px">Create account Circle</Heading>
         <RegisterForm />
-        <Text>Already have account? <Link color="blue.500" href="#">Login</Link></Text>
+        <Text>Already have account? <Link color="blue.500" onClick={login}>Login</Link></Text>
       </Box>
     </Box>
     </>

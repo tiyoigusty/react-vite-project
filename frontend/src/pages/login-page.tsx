@@ -1,7 +1,14 @@
 import { Box, Heading, Link, Text } from "@chakra-ui/react";
 import { LoginForm } from "../features/auth/components/login";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
+  const navigate = useNavigate();
+  
+  function register() {
+    navigate("/auth/register");
+  }
+  
   return (
     <>
       <Box display="flex" justifyContent="center">
@@ -20,7 +27,7 @@ function LoginPage() {
           <LoginForm />
           <Text>
             Don't have an account yet?{" "}
-            <Link color="blue.500" href="#">
+            <Link color="blue.500" onClick={register}>
               Create Account
             </Link>
           </Text>
