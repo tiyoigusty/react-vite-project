@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import ThreadController from "./controllers/thread"
 import AuthController from "./controllers/auth"
@@ -8,6 +8,7 @@ import { upload } from "./middlewares/upload-file";
 import { authenticate } from "./middlewares/auth";
 import swaggerUI from "swagger-ui-express"
 import swaggerDoc from "../swagger/swagger-output.json"
+import { initializeRedisClient, redisClient } from "./libs/redis";
 dotenv.config()
 
 const app = express();
@@ -23,7 +24,8 @@ app.use("/uploads", express.static("uploads"))
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc, {
   explorer: true,
   swaggerOptions: {
-    persistAuthorization: true
+    persistAuthorization: true,
+    displayRequestDuration: true
   }
 }))
 
@@ -43,7 +45,12 @@ routerv1.post("/auth/check", authenticate, AuthController.check)
 
 routerv1.get("/users",authenticate, UserController.find)
 
-routerv1.get("/threads", authenticate, ThreadController.find);
+routerv1.get("/threads", authenticate, async(req: Request, res: Response, next: NextFunction) => {
+  const result = await redisClient.get("THREADS_DATA")
+  if(result) return res.json(JSON.parse(result))
+
+    next()
+}, ThreadController.find);
 routerv1.post("/threads", authenticate, upload.single("image"), ThreadController.create);
 routerv1.get("/threads/:id", authenticate, ThreadController.findOne);
 routerv1.patch("/threads/:id", authenticate, ThreadController.update);
@@ -54,6 +61,8 @@ routerv2.get("/", (req: Request, res: Response) => {
   res.send("HELLO THIS IS VERSION 2");
 });
 
-app.listen(port, () => {
-  console.log(`SERVER RUNNING ON PORT ${port}`);
-});
+initializeRedisClient().then(() => {
+  app.listen(port, () => {
+    console.log(`SERVER RUNNING ON PORT ${port}`);
+  });
+})

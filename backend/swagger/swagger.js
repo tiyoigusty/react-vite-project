@@ -6,11 +6,11 @@ const doc = {
     description: 'Welcome to Circle API'
   },
   servers: [
+    // {
+    //     url: 'https://react-vite-project-production.up.railway.app/api/v1'
+    // },
     {
-        url: 'https://react-vite-project-production.up.railway.app/api/v1'
-    },
-    {
-        url: 'https://localhost:5000'
+        url: 'http://localhost:5000'
     },
   ],
   components: {

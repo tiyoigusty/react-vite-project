@@ -7,10 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://react-vite-project-production.up.railway.app"
-    },
-    {
-      "url": "https://localhost:5000"
+      "url": "http://localhost:5000"
     }
   ],
   "paths": {
