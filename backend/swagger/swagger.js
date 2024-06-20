@@ -12,9 +12,9 @@ const doc = {
     {
       url: "https://react-vite-project-production.up.railway.app/api/v1",
     },
-    {
-      url: "http://localhost:5000",
-    },
+    // {
+    //   url: "http://localhost:5000",
+    // },
   ],
   components: {
     securitySchemes: {
