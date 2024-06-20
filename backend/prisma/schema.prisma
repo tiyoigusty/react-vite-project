@@ -21,6 +21,7 @@ model User {
   password     String
   photoProfile String?
   bio          String?
+  isVerified   Boolean @default(false)
 
   threads   Thread[]
   replies   Reply[]
@@ -93,4 +94,21 @@ model Like {
   updatedAt DateTime @default(now()) @updatedAt
 
   @@map("likes")
+}
+
+model Verification {
+  id       Int  @id @default(autoincrement())
+
+  token String @unique
+  type VerificationType @default(EMAIL)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("verifications")
+}
+
+enum VerificationType {
+  EMAIL
+  FORGOT_PASSWORD
 }
