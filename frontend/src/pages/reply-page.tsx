@@ -1,11 +1,11 @@
 import { Box } from "@chakra-ui/react";
+import { Reply } from "../features/reply/component/reply";
 import { DevelopedBy } from "../features/right-bar/developed-by";
 import { MyProfile } from "../features/right-bar/my-profile";
 import { SuggestionTab } from "../features/right-bar/suggestion-tab";
 import { SideBar } from "../features/side-bar/side-bar";
-import { Search } from "../features/search/components/search";
 
-export function SearchPage() {
+export function ReplyPage() {
   return (
     <>
       <Box display="flex" justifyContent="center">
@@ -13,7 +13,7 @@ export function SearchPage() {
           <SideBar />
         </Box>
         <Box position="absolute" left="250">
-          <Search />
+          <Reply />
         </Box>
         <Box position="absolute" left="850">
           <MyProfile />

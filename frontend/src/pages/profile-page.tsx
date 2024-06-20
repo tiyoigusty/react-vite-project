@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { Profile } from "../features/profile/components/profile";
 import { DevelopedBy } from "../features/right-bar/developed-by";
-import { MyProfile } from "../features/right-bar/my-profile";
 import { SuggestionTab } from "../features/right-bar/suggestion-tab";
 import { SideBar } from "../features/side-bar/side-bar";
 
@@ -9,14 +8,13 @@ export function ProfilePage() {
   return (
     <>
       <Box display="flex" justifyContent="center">
-        <Box>
+        <Box position="fixed" left="0">
           <SideBar />
         </Box>
-        <Box borderRight="1px solid grey" borderLeft="1px solid grey">
+        <Box position="absolute" left="250">
           <Profile />
         </Box>
-        <Box>
-          <MyProfile />
+        <Box position="absolute" left="850">
           <SuggestionTab />
           <DevelopedBy />
         </Box>

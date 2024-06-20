@@ -6,7 +6,7 @@ export function Search() {
 
   return (
     <>
-      <Box w="600px" p="20px" color="white">
+      <Box w="600px" p="20px" color="white" borderRight="1px solid grey" borderLeft="1px solid grey">
         <Input onChange={handleChange} bg="rgb(40, 40, 40)" placeholder="Search..." />
         {data.map((user) => {
           return (

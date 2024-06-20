@@ -9,13 +9,13 @@ export function FollowPage() {
   return (
     <>
       <Box display="flex" justifyContent="center">
-        <Box>
+        <Box position="fixed" left="0">
           <SideBar />
         </Box>
-        <Box borderRight="1px solid grey" borderLeft="1px solid grey">
+        <Box position="absolute" left="250">
           <Follow />
         </Box>
-        <Box>
+        <Box position="absolute" left="850">
           <MyProfile />
           <SuggestionTab />
           <DevelopedBy />

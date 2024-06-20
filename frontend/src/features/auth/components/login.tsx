@@ -1,8 +1,14 @@
 import { Box, Button, Input, Text } from "@chakra-ui/react";
 import { useLoginForm } from "../hooks/use-login-form";
+import { useNavigate } from "react-router-dom";
 
 export function LoginForm() {
   const { handleSubmit, onSubmit, register } = useLoginForm();
+  const navigate = useNavigate()
+
+  function forgotPassword() {
+    navigate("/auth/forgot-password")
+  }
 
   return (
     <>
@@ -21,7 +27,9 @@ export function LoginForm() {
             placeholder="Password"
           />
           <Text display="flex" justifyContent="end">
+            <Button onClick={forgotPassword} bg="transparent" color="white" _hover={{ bg: "transparent"}} >
             Forgot password?
+            </Button>
           </Text>
           <Button
             type="submit"

@@ -79,6 +79,7 @@ export function SideBar() {
                 fontSize="13px"
                 borderRadius="20px"
                 _hover={{ bg: "blue.200" }}
+                onClick={homePage}
               >
                 Create Post
               </Button>
