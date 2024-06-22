@@ -58,7 +58,7 @@ export function SuggestionList({ image, name, username }: SuggestionProps) {
                   _hover={{ bg: "blue.200" }}
                   onClick={() => setIsFollow(true)}
                 >
-                  Followed
+                  Following
                 </Button>
               </>
             )}
