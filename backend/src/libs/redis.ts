@@ -7,7 +7,7 @@ export async function initializeRedisClient() {
     redisClient = await createClient({
         url: `${process.env.REDIS_URL}`
     })
-    .on("error", (err) => {
+    .on("error", (Error) => {
         throw new Error("Redis Client Error!")
     })
     .connect()
