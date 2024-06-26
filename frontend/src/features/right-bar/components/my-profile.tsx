@@ -2,49 +2,44 @@ import {
   Avatar,
   Box,
   Button,
+  Container,
   Heading,
   LinkBox,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text
+  Text,
 } from "@chakra-ui/react";
-import { FaArrowLeft } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
-import { MyThread } from "./my-thread";
-import { MyMedia } from "./my-media";
 import { Link } from "react-router-dom";
+import { RootState } from "../../../redux/store";
 
-
-export function Profile() {
+export function MyProfile() {
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
   return (
     <>
-      <Box color="white" w="600px" borderRight="1px solid grey" borderLeft="1px solid grey">
-        <Heading fontSize="20px" color="white" display="flex" alignItems="center">
-        <Button bg="transparent" _hover={{ bg: "transparent" }} color="white"><FaArrowLeft /></Button> Agik Gigih Sulistyo
-        </Heading>
+      <Container w="400px">
         <Box
           color="white"
+          bg="rgb(40, 40, 40)"
+          mt="15px"
+          borderRadius="10px"
           p="10px"
         >
+          <Heading fontSize="20px" color="white" p="10px 0">
+            My Profile
+          </Heading>
           <Box w="100%" display="flex" flexDir="column" alignItems="center">
             <Box
               w="100%"
-              h="100px"
+              h="70px"
               backgroundImage={currentUser.background}
               backgroundPosition="center"
               backgroundSize="cover"
               borderRadius="20px"
             ></Box>
             <Avatar
-              mt="-50px"
-              ml="-400px"
-              size="xl"
+              mt="-35px"
+              ml="-260px"
+              size="lg"
               border="2px solid rgb(40, 40, 40)"
               src={currentUser.photoProfile}
             ></Avatar>
@@ -57,7 +52,7 @@ export function Profile() {
               borderRadius="20px"
               _hover={{ bg: "blue.200" }}
               mt="-23px"
-              mr="-400px"
+              mr="-260px"
             >
               <LinkBox>
                 <Link to={"/edit-profile/" + currentUser.id}>Edit Profile</Link>
@@ -80,24 +75,7 @@ export function Profile() {
             </Text>
           </Box>
         </Box>
-
-      <Box color="white" p="10px" w="600px">
-        <Tabs isFitted variant="enclosed">
-          <TabList mb="1em">
-            <Tab>All Post</Tab>
-            <Tab>Media</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              <MyThread />
-            </TabPanel>
-            <TabPanel>
-              <MyMedia />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Box>
-      </Box>
+      </Container>
     </>
   );
 }

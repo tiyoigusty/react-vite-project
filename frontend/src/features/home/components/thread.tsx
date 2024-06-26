@@ -4,6 +4,7 @@ import {
   BoxProps,
   Button,
   Image,
+  LinkBox,
   Menu,
   MenuButton,
   MenuItem,
@@ -14,7 +15,7 @@ import { useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { FaHeart, FaRegCommentDots } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ThreadEntity } from "../entities/thread";
 
 interface ThreadCardProps extends BoxProps {
@@ -23,11 +24,6 @@ interface ThreadCardProps extends BoxProps {
 
 export function ThreadCard({ thread }: ThreadCardProps) {
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const navigate = useNavigate();
-
-  function reply() {
-    navigate("/replies");
-  }
 
   return (
     <>
@@ -41,16 +37,16 @@ export function ThreadCard({ thread }: ThreadCardProps) {
       >
         <Box display="flex" gap="10px">
           <Box>
-            <Avatar name="profpic" src={thread.user.photoProfile}></Avatar>
+            <Avatar name="profpic" src={thread?.user?.photoProfile} />
           </Box>
 
           <Box>
             <Box display="flex" alignItems="center" gap="5px">
               <Text fontSize="16px" fontWeight="bold">
-                {thread.user.fullName}
+                {thread?.user?.fullName}
               </Text>
               <Text fontSize="12px" fontWeight="light">
-                @{thread.user.username}
+                @{thread?.user?.username}
               </Text>
               <GoDotFill fontSize="8px" />
               <Text fontSize="14px" fontWeight="light">
@@ -58,9 +54,9 @@ export function ThreadCard({ thread }: ThreadCardProps) {
               </Text>
             </Box>
             <Text fontSize="14px" p="5px 0">
-              {thread.content}
+              {thread?.content}
             </Text>
-            <Image src={thread.image} borderRadius="10px" pb="5px" w="400px" />
+            <Image src={thread?.image} borderRadius="10px" pb="5px" w="400px" />
             <Box display="flex" alignItems="center" gap="10px">
               <Button
                 bg="transparent"
@@ -90,18 +86,13 @@ export function ThreadCard({ thread }: ThreadCardProps) {
                   </>
                 )}
               </Button>
-              <Button
-                onClick={reply}
-                bg="transparent"
-                color="white"
-                gap="5px"
-                _hover={{ bg: "transparent" }}
-                display="flex"
-                alignItems="center"
-                fontSize="14px"
-              >
-                <FaRegCommentDots /> 456 Replies
-              </Button>
+              <LinkBox>
+                <Link to={`/threads/${thread.id}`}>
+                <Box display="flex" alignItems="center" gap="5px" fontSize="14px">
+                  <FaRegCommentDots /> 456 Replies
+                  </Box>
+                </Link>
+              </LinkBox>
             </Box>
           </Box>
         </Box>
@@ -121,8 +112,12 @@ export function ThreadCard({ thread }: ThreadCardProps) {
               <BsThreeDots />
             </MenuButton>
             <MenuList color="black">
-              <MenuItem>Edit</MenuItem>
-              <MenuItem>Delete</MenuItem>
+              <MenuItem>
+              <Button w="100%">Edit</Button>
+              </MenuItem>
+              <MenuItem>
+              <Button w="100%">Delete</Button>
+              </MenuItem>
             </MenuList>
           </Menu>
         </Box>

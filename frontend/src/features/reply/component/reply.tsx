@@ -1,24 +1,10 @@
 import { Box, Button, Heading } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { api } from "../../../libs/api";
-import { Post } from "../../home/components/post";
-import { ReplyEntity } from "../entities/reply";
+import { PostReply } from "./post-reply";
 import { ReplyCard } from "./reply-card";
 import { ReplyPerson } from "./reply-person";
 
 export function Reply() {
-  const [replies, setReplies] = useState<ReplyEntity[]>()
-    
-  async function getReplies() {
-    const response = await api.get("/replies")
-    setReplies(response.data)
-  }
-
-  useEffect(() => {
-    getReplies()
-  }, [])
-  
   return (
     <>
       <Box w="600px" borderRight="1px solid grey" borderLeft="1px solid grey">
@@ -37,12 +23,10 @@ export function Reply() {
         <ReplyCard />
 
         <Box bg="rgb(40, 40, 40)">
-          <Post />
+          <PostReply />
         </Box>
 
-        {replies?.map((reply) => {
-          return <ReplyPerson reply={reply} />
-        })}
+        <ReplyPerson />
       </Box>
     </>
   );

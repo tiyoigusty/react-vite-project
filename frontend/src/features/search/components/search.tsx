@@ -11,15 +11,15 @@ export function Search() {
         {data.map((user) => {
           return (
             <>
-              <Box mt="15px" pb="15px" borderBottom="1px solid grey" display="flex" justifyContent="space-between" alignItems="center">
+              <Box mt="15px" pb="15px" borderBottom="1px solid grey" display="flex" gap="10px" justifyContent="space-between" alignItems="center">
                 <Box display="flex" alignItems="center" gap="10px">
-                  <Avatar size="sm" src={user.photoProfile}></Avatar>
+                  <Avatar size="md" src={user.photoProfile}></Avatar>
                   <Box>
                     <Text fontSize="12px" fontWeight="bold">
                       {user.fullName}
                     </Text>
-                    <Text fontSize="12px">{user.username}</Text>
-                    <Text fontSize="12px">{user.bio}</Text>
+                    <Text fontSize="12px">@{user.username}</Text>
+                    <Text fontSize="12px" fontWeight="lighter">{user.bio}</Text>
                   </Box>
                 </Box>
                 <Box>

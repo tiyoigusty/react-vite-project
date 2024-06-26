@@ -1,4 +1,6 @@
 import { Tabs, TabList, Tab, TabPanels, TabPanel, Box } from "@chakra-ui/react";
+import { Followings } from "./followings";
+import { Followers } from "./followers";
 
 export function Follow() {
   return (
@@ -11,10 +13,10 @@ export function Follow() {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <p>Following</p>
+              <Followings />
             </TabPanel>
             <TabPanel>
-              <p>Follower</p>
+              <Followers />
             </TabPanel>
           </TabPanels>
         </Tabs>

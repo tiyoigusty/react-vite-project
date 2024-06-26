@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import { Reply } from "../features/reply/component/reply";
-import { DevelopedBy } from "../features/right-bar/developed-by";
-import { MyProfile } from "../features/right-bar/my-profile";
-import { SuggestionTab } from "../features/right-bar/suggestion-tab";
+import { DevelopedBy } from "../features/right-bar/components/developed-by";
+import { MyProfile } from "../features/right-bar/components/my-profile";
+import { SuggestionTab } from "../features/right-bar/components/suggestion-tab";
 import { SideBar } from "../features/side-bar/side-bar";
 
 export function ReplyPage() {

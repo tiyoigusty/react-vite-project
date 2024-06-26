@@ -1,13 +1,9 @@
 import { Avatar, Box, Button, Input } from "@chakra-ui/react";
 import { LuImagePlus } from "react-icons/lu";
-import { useThread } from "../hooks/use-thread";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { useReply } from "../hooks/use-reply";
 
-export function Post() {
-  const { register, handleSubmit, onSubmit } = useThread();
-
-  const currentUser = useSelector((state: RootState) => state.auth.user);
+export function PostReply() {
+  const { register, handleSubmit, onSubmit } = useReply();
 
   return (
     <>
@@ -15,7 +11,7 @@ export function Post() {
         <Box w="100%" display="flex" alignItems="center" gap="5px">
           <Avatar
             name="photoProfile"
-            src={currentUser.photoProfile}
+            src="https://images.pexels.com/photos/18581955/pexels-photo-18581955/free-photo-of-man-between-skyscrapers.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
           ></Avatar>
 
           <form onSubmit={handleSubmit(onSubmit)}>

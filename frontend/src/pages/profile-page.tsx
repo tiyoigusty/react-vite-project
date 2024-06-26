@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { Profile } from "../features/profile/components/profile";
-import { DevelopedBy } from "../features/right-bar/developed-by";
-import { SuggestionTab } from "../features/right-bar/suggestion-tab";
+import { DevelopedBy } from "../features/right-bar/components/developed-by";
+import { SuggestionTab } from "../features/right-bar/components/suggestion-tab";
 import { SideBar } from "../features/side-bar/side-bar";
 
 export function ProfilePage() {
