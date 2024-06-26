@@ -5,9 +5,10 @@ import { v2 as cloudinary } from "cloudinary";
 
 const prisma = new PrismaClient();
 
-async function find() {
+async function find(id: number) {
   try {
     return await prisma.reply.findMany({
+      where: {threadId: id},
       include: {
         user: {
           select: {
@@ -37,7 +38,7 @@ async function findOne(id: number) {
     }
   }
 
-  async function create(dto: CreateThreadDTO, userId: number) {
+  async function create(dto: CreateThreadDTO, userId: number, id: number) {
     try {
       // validation with joi
       const validate = createThreadSchema.validate(dto);
@@ -56,7 +57,7 @@ async function findOne(id: number) {
       });
   
       return await prisma.reply.create({
-        data: { ...dto, userId, image: upload.secure_url },
+        data: { ...dto, userId, threadId:id, image: upload.secure_url },
       });
     } catch (error) {
       throw new String(error);

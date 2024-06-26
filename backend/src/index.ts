@@ -4,6 +4,7 @@ import ThreadController from "./controllers/thread";
 import AuthController from "./controllers/auth";
 import UserController from "./controllers/user";
 import ReplyController from "./controllers/reply";
+import ProfileController from "./controllers/profile";
 import dotenv from "dotenv";
 import { upload } from "./middlewares/upload-file";
 import { authenticate } from "./middlewares/auth";
@@ -66,6 +67,8 @@ initializeRedisClient().then(() => {
   routerv1.get("/auth/verify-email", AuthController.verify);
 
   routerv1.get("/users", authenticate, UserController.find);
+  routerv1.get("/users/:id", authenticate, UserController.findOne);
+  routerv1.patch("/users/:id", authenticate, UserController.update);
 
   routerv1.get(
     "/threads",
@@ -88,11 +91,13 @@ initializeRedisClient().then(() => {
   routerv1.patch("/threads/:id", authenticate, upload.single("image"), ThreadController.update);
   routerv1.delete("/threads/:id", authenticate, ThreadController.remove);
 
-  routerv1.get("/replies", authenticate, ReplyController.find)
+  routerv1.get("/replies/:id", authenticate, ReplyController.find)
   routerv1.get("/replies/:id", authenticate, ReplyController.findOne)
-  routerv1.post("/replies", authenticate, upload.single("image"), ReplyController.create)
+  routerv1.post("/replies/:id", authenticate, upload.single("image"), ReplyController.create)
   routerv1.patch("/replies/:id", authenticate, upload.single("image"), ReplyController.update)
   routerv1.delete("/replies/:id", authenticate, ReplyController.remove)
+
+  routerv1.get("/profiles/:id", authenticate, ProfileController.find)
 
   // v2
   routerv2.get("/", (req: Request, res: Response) => {

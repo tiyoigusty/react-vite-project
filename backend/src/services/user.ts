@@ -1,35 +1,60 @@
 import { PrismaClient } from "@prisma/client";
-import { UserJWTPayload } from "../../types/user";
+import { UpdatedUserDTO } from "../dto/user-dto";
 
 const prisma = new PrismaClient();
 
 async function find(search: string) {
   try {
     return await prisma.user.findMany({
-      where: {username: {contains: search, mode: "insensitive"}}
+      where: {fullName: {contains: search, mode: "insensitive"}}
     });
   } catch (error) {
     throw new String(error);
   }
 }
 
-// async function find(user: UserJWTPayload, search: string) {
-//   try {
-//     const users = await prisma.user.findMany();
+async function findOne(id: number) {
+  try {
+    const thread = await prisma.user.findFirst({
+      where: { id },
+    });
 
-//     const follows = await prisma.follow.findMany({
-//       where: { follower: { id: user.id } },
-//     });
+    if (!thread) throw new String("THREAD NOT FOUND!!");
+    return thread;
+  } catch (error) {
+    throw new String(error);
+  }
+}
 
-//     return users.map((user) => {
-//       return follows.map((follow) => {
-//         if (user.id === follow.followedId) return { ...user, isFollowed: true };
-//         return { ...user, isFollowed: false };
-//       })[0];
-//     });
-//   } catch (error) {
-//     throw new String(error);
-//   }
-// }
+async function update(id: number, dto: UpdatedUserDTO) {
+  try {
+    const user = await prisma.user.findFirst({
+      where: { id: id },
+    });
 
-export default { find };
+    if (dto.background) {
+      user.background = dto.background;
+    }
+    if (dto.photoProfile) {
+      user.photoProfile = dto.photoProfile;
+    }
+    if (dto.fullName) {
+      user.fullName = dto.fullName;
+    }
+    if (dto.username) {
+      user.username = dto.username;
+    }
+    if (dto.bio) {
+      user.bio = dto.bio;
+    }
+
+    return await prisma.user.update({
+      where: { id: id },
+      data: { ...user },
+    });
+  } catch (error) {
+    throw new String(error);
+  }
+}
+
+export default { find, findOne, update };

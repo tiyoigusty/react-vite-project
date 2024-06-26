@@ -4,7 +4,8 @@ import ReplyService from "../services/reply";
 
 async function find(req: Request, res: Response) {
   try {
-    const replies = await ReplyService.find();
+    const {id} = req.params
+    const replies = await ReplyService.find(Number(id));
 
     return res.json(replies);
   } catch (error) {
@@ -28,13 +29,14 @@ async function findOne(req: Request, res: Response) {
 
 async function create(req: Request, res: Response) {
   try {
+    const {id} = req.params
     const user = res.locals.user as UserJWTPayload;
     const body = {
       ...req.body,
       image: req.file ? req.file.path : "",
     };
 
-    const createdReply = await ReplyService.create(body, user.id);
+    const createdReply = await ReplyService.create(body, user.id, Number(id));
     res.status(201).json(createdReply);
   } catch (error) {
     res.status(500).json({

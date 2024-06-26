@@ -7,9 +7,9 @@ async function find(req: Request, res: Response) {
   try {
     const threads = await ThreadService.find();
 
-    await redisClient.set("THREADS_DATA", JSON.stringify(threads), {
-      EX: 10,
-    });
+    // await redisClient.set("THREADS_DATA", JSON.stringify(threads), {
+    //   EX: 10,
+    // });
 
     return res.json(threads);
   } catch (error) {

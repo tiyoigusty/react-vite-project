@@ -10,7 +10,12 @@ async function find() {
     return await prisma.thread.findMany({
       include: {
         user: {
-          select: { id: true, fullName: true, username: true, photoProfile: true },
+          select: {
+            id: true,
+            fullName: true,
+            username: true,
+            photoProfile: true,
+          },
         },
       },
     });
@@ -23,6 +28,16 @@ async function findOne(id: number) {
   try {
     const thread = await prisma.thread.findFirst({
       where: { id },
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullName: true,
+            username: true,
+            photoProfile: true,
+          },
+        },
+      },
     });
 
     if (!thread) throw new String("THREAD NOT FOUND!!");

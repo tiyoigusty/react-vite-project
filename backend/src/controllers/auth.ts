@@ -48,7 +48,13 @@ async function register(req: Request, res: Response) {
       from: "Circle App <tiyooigustyy@gmail.com>",
       to: register.email,
       subject: "Register Success ✔",
-      html: `<a href="${fullURL}/api/v1/verify-email?token=${token}">Verification your Email</a>`,
+      html: `<h1>Welcome to Circle</h1>
+              <p>Thanks for registering for an account on Circle! Before we get started, we
+                just need to confirm that this is you. Click below to verify your email
+                address: </p>
+              <button style="padding: 10px; background: rgb(0, 142, 236); border-radius: 10px; border: none;">
+                <a href="${fullURL}/api/v1/auth/verify-email?token=${token}" style="color: white; text-decoration: none">Verification your Email</a>
+              </button>`,
     });
 
     console.log("Message sent: %s", info.messageId);
@@ -58,7 +64,7 @@ async function register(req: Request, res: Response) {
     res.status(200).json(register);
   } catch (error) {
     res.status(500).json({
-      message: error.message
+      message: error.message,
     });
   }
 }
@@ -70,7 +76,7 @@ async function check(req: Request, res: Response) {
     res.json(user);
   } catch (error) {
     res.status(500).json({
-      message: error,
+      message: error.message,
     });
   }
 }
