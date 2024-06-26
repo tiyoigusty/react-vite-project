@@ -12,17 +12,11 @@ const doc = {
     {
       url: "https://react-vite-project-production.up.railway.app/api/v1",
     },
-    // {
-    //   url: "http://localhost:5000",
-    // },
+    {
+      url: "http://localhost:5000",
+    },
   ],
   components: {
-    securitySchemes: {
-      bearerAuth: {
-        type: "http",
-        scheme: "bearer",
-      },
-    },
     "@schemas": {
       RegisterDTO: {
         type: "object",
@@ -51,13 +45,16 @@ const doc = {
         required: ["content", "image"],
       },
     },
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+      },
+    },
   },
 };
 
 const outputFile = "./swagger-output.json";
 const routes = ["./src/index.ts"];
-
-/* NOTE: If you are using the express Router, you must pass in the 'routes' only the 
-root file where the route starts, such as index.js, app.js, routes.js, etc ... */
 
 swaggerAutogen(outputFile, routes, doc);
