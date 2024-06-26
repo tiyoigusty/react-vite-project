@@ -21,6 +21,7 @@ model User {
   password     String
   photoProfile String?
   bio          String?
+  background  String @default("https://images.pexels.com/photos/4439410/pexels-photo-4439410.jpeg?auto=compress&cs=tinysrgb&w=600")
   isVerified   Boolean @default(false)
 
   threads   Thread[]
