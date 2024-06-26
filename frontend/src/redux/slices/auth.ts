@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface User {
+  id: number;
   username: string;
   fullName: string;
   email: string;
   photoProfile: string;
   bio: string;
+  background: string;
 }
 
 export interface AuthState {
@@ -14,11 +16,13 @@ export interface AuthState {
 
 const initialState: AuthState = {
   user: {
+    id: 0,
     username: "",
     fullName: "",
     email: "",
     photoProfile: "",
     bio: "",
+    background: "",
   },
 };
 
@@ -34,4 +38,4 @@ export const authSlice = createSlice({
 
 export const { SET_USER } = authSlice.actions;
 
-export default authSlice.reducer
+export default authSlice.reducer;
