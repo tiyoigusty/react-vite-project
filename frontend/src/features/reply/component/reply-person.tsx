@@ -35,27 +35,27 @@ export function ReplyPerson() {
               borderBottom="1px solid grey"
             >
               <Box>
-                <Avatar name="profpic" src={data.user.photoProfile}></Avatar>
+                <Avatar name="profpic" src={data?.user?.photoProfile}></Avatar>
               </Box>
 
               <Box>
                 <Box display="flex" alignItems="center" gap="5px">
                   <Text fontSize="16px" fontWeight="bold">
-                    {data.user.fullName}
+                    {data?.user?.fullName}
                   </Text>
                   <Text fontSize="12px" fontWeight="light">
-                    @{data.user.username}
+                    @{data?.user?.username}
                   </Text>
                   <GoDotFill fontSize="8px" />
                   <Text fontSize="14px" fontWeight="light">
-                    5 hour
+                    {data?.time}
                   </Text>
                 </Box>
                 <Text fontSize="14px" p="5px 0">
-                  {data.content}
+                  {data?.content}
                 </Text>
                 <Image
-                  src={data.image}
+                  src={data?.image}
                   borderRadius="10px"
                   pb="5px"
                   w="400px"

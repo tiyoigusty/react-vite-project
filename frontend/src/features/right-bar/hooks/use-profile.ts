@@ -4,9 +4,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { api } from "../../../libs/api";
 import { UserEntity } from "../../home/entities/user";
 import { CreateProfileDTO } from "../types/profile";
-import { useParams } from "react-router-dom";
 
-export const useProfile = () => {
+export const useProfile = (id: number) => {
   const { data, refetch } = useQuery<UserEntity[]>({
     queryKey: ["users"],
     queryFn: getThreads,
@@ -22,8 +21,6 @@ export const useProfile = () => {
     return response.data;
   }
 
-  const {id} = useParams()
-  
   const { mutateAsync } = useMutation<
     UserEntity,
     AxiosError,
@@ -31,8 +28,12 @@ export const useProfile = () => {
   >({
     mutationFn: (newProfile) => {
       const formData = new FormData();
-      formData.append("background", newProfile.background[0]);
-      formData.append("photoProfile", newProfile.photoProfile[0]);
+      if(newProfile.background[0]){
+        formData.append("background", newProfile.background[0]);
+      }
+      if(newProfile.photoProfile[0]){
+        formData.append("photoProfile", newProfile.photoProfile[0]);
+      }
       formData.append("fullName", newProfile.fullName);
       formData.append("username", newProfile.username);
       formData.append("bio", newProfile.bio);

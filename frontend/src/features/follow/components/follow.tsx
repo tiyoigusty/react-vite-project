@@ -5,7 +5,14 @@ import { Followers } from "./followers";
 export function Follow() {
   return (
     <>
-      <Box color="white" p="10px" w="600px"  borderRight="1px solid grey" borderLeft="1px solid grey">
+      <Box
+        color="white"
+        p="10px"
+        w="600px"
+        h="100vh"
+        borderRight="1px solid grey"
+        borderLeft="1px solid grey"
+      >
         <Tabs isFitted variant="enclosed">
           <TabList mb="1em">
             <Tab>Following</Tab>

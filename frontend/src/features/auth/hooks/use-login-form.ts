@@ -27,6 +27,8 @@ export const useLoginForm = () => {
 
       const token = response.data.token;
       const user = response.data.user;
+      console.log("ini data user login", user);
+      
 
       if (token) localStorage.setItem("token", response.data.token);
       if (user) {

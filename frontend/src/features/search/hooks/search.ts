@@ -13,6 +13,9 @@ export const useSearch = () => {
   }
 
   async function getData() {
+    if(search === "") {
+      return
+    }
     const response = await api.get(`/users?search=${debounceSearch}`);
     setData(response.data);
   }

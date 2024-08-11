@@ -52,12 +52,14 @@ async function findOne(id: number) {
         api_secret: process.env.CLOUDINARY_API_SECRET,
       });
   
-      const upload = await cloudinary.uploader.upload(dto.image, {
-        upload_preset: "circle",
-      });
+      if(dto.image) {
+        const upload = await cloudinary.uploader.upload(dto.image, {
+          upload_preset: "circle",
+        });
+      }
   
       return await prisma.reply.create({
-        data: { ...dto, userId, threadId:id, image: upload.secure_url },
+        data: { ...dto, userId, threadId:id },
       });
     } catch (error) {
       throw new String(error);

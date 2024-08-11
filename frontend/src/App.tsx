@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { EditProfile } from "./features/right-bar/components/edit-profile";
 import { api } from "./libs/api";
 import { FollowPage } from "./pages/follow-page";
 import ForgotPasswordPage from "./pages/forgot-password-page";
@@ -11,18 +12,18 @@ import RegisterPage from "./pages/register-page";
 import { ReplyPage } from "./pages/reply-page";
 import ResetPasswordPage from "./pages/reset-password-page";
 import { SearchPage } from "./pages/search-page";
+import { UserProfilePage } from "./pages/user-profile-page";
 import WelcomePage from "./pages/welcome-page";
 import { SET_USER } from "./redux/slices/auth";
 import { RootState } from "./redux/store";
-import { EditProfile } from "./features/right-bar/components/edit-profile";
 
 function App() {
-  const currentUser = useSelector((state: RootState) => state.auth.user)
-  const dispatch = useDispatch()
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const PrivateRoute = () => {
-    if(!isLoading) {
+    if (!isLoading) {
       if (currentUser.email) return <Outlet />;
       return <Navigate to={"/auth/login"} />;
     }
@@ -31,16 +32,20 @@ function App() {
   async function authCheck() {
     try {
       const token = localStorage.token;
-      const response = await api.post("/auth/check", {}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      dispatch(SET_USER(response.data))
-      setIsLoading(false)
+      const response = await api.post(
+        "/auth/check",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(SET_USER(response.data));
+      setIsLoading(false);
     } catch (error) {
       localStorage.removeItem("token");
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -65,6 +70,7 @@ function App() {
           <Route path="/follow" element={<FollowPage />} />
           <Route path="/profile/:id" element={<ProfilePage />} />
           <Route path="/edit-profile/:id" element={<EditProfile />} />
+          <Route path="/user-profile/:id" element={<UserProfilePage />} />
         </Route>
       </Routes>
     </>

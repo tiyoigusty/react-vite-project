@@ -3,27 +3,47 @@ import {
   Box,
   BoxProps,
   Button,
+  Heading,
   Image,
   LinkBox,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
+  Modal,
+  ModalContent,
+  ModalOverlay,
   Text,
+  Textarea,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
-import { FaHeart, FaRegCommentDots } from "react-icons/fa";
+import { FaHeart, FaRegCommentDots, FaRegTimesCircle } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
+import { LuImagePlus } from "react-icons/lu";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { api } from "../../../libs/api";
+import { RootState } from "../../../redux/store";
 import { ThreadEntity } from "../entities/thread";
+import { useUpdateThread } from "../hooks/use-update-thread";
 
 interface ThreadCardProps extends BoxProps {
   thread: ThreadEntity;
 }
 
 export function ThreadCard({ thread }: ThreadCardProps) {
-  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const { register, handleSubmit, onSubmit } = useUpdateThread(thread.id);
+
+  async function deleteThread() {
+    const response = await api.delete("/threads/" + thread.id);
+    location.reload();
+    return response.data;
+  }
 
   return (
     <>
@@ -42,15 +62,17 @@ export function ThreadCard({ thread }: ThreadCardProps) {
 
           <Box>
             <Box display="flex" alignItems="center" gap="5px">
-              <Text fontSize="16px" fontWeight="bold">
-                {thread?.user?.fullName}
-              </Text>
+              <Link to={`/user-profile/${thread?.user?.id}`}>
+                <Text fontSize="16px" fontWeight="bold">
+                  {thread?.user?.fullName}
+                </Text>
+              </Link>
               <Text fontSize="12px" fontWeight="light">
                 @{thread?.user?.username}
               </Text>
               <GoDotFill fontSize="8px" />
               <Text fontSize="14px" fontWeight="light">
-                5 hour
+                {thread?.time}
               </Text>
             </Box>
             <Text fontSize="14px" p="5px 0">
@@ -67,29 +89,17 @@ export function ThreadCard({ thread }: ThreadCardProps) {
                 gap="5px"
                 fontSize="14px"
               >
-                {isLiked ? (
-                  <>
-                    <FaHeart
-                      color="red"
-                      cursor="pointer"
-                      onClick={() => setIsLiked(false)}
-                    />{" "}
-                    234 Likes
-                  </>
-                ) : (
-                  <>
-                    <FaHeart
-                      cursor="pointer"
-                      onClick={() => setIsLiked(true)}
-                    />{" "}
-                    234 Likes
-                  </>
-                )}
+                <FaHeart color="red" cursor="pointer" /> {thread?._count?.likes} Likes
               </Button>
               <LinkBox>
                 <Link to={`/threads/${thread.id}`}>
-                <Box display="flex" alignItems="center" gap="5px" fontSize="14px">
-                  <FaRegCommentDots /> 456 Replies
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    gap="5px"
+                    fontSize="14px"
+                  >
+                    <FaRegCommentDots /> {thread?._count?.replies} Replies
                   </Box>
                 </Link>
               </LinkBox>
@@ -113,14 +123,102 @@ export function ThreadCard({ thread }: ThreadCardProps) {
             </MenuButton>
             <MenuList color="black">
               <MenuItem>
-              <Button w="100%">Edit</Button>
+                <Box w="100%">
+                  <Button w="100%" onClick={onOpen}>
+                    Edit
+                  </Button>
+                </Box>
               </MenuItem>
               <MenuItem>
-              <Button w="100%">Delete</Button>
+                <Button w="100%" onClick={deleteThread}>
+                  Delete
+                </Button>
               </MenuItem>
             </MenuList>
           </Menu>
         </Box>
+
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent borderRadius="25px">
+            <Box w="600px" bg="rgb(40, 40, 40)" px="20px" borderRadius="20px">
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Heading fontSize="20px" color="white" p="10px 0">
+                  Edit Profile
+                </Heading>
+                <Box>
+                  <Button
+                    bg="transparent"
+                    size="sm"
+                    color="white"
+                    _hover={{ bg: "transparent" }}
+                    onClick={onClose}
+                  >
+                    <FaRegTimesCircle fontSize="20px" />
+                  </Button>
+                </Box>
+              </Box>
+
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Box
+                  display="flex"
+                  gap="10px"
+                  pb="10px"
+                  borderBottom="1px solid grey"
+                >
+                  <Avatar
+                    name="photoProfile"
+                    src={currentUser.photoProfile}
+                  ></Avatar>
+                  <Textarea
+                    placeholder="What's happening?!"
+                    resize="none"
+                    color="white"
+                    {...register("content")}
+                  />
+                </Box>
+
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  mx="30px"
+                  my="10px"
+                >
+                  <label htmlFor="upload-image" style={{ cursor: "pointer" }}>
+                    <LuImagePlus fontSize="25px" color="white" />
+                  </label>
+                  <input
+                    type="file"
+                    id="upload-image"
+                    style={{ display: "none" }}
+                    {...register("image")}
+                  />
+                  <Button
+                    type="submit"
+                    color="white"
+                    bg="blue.500"
+                    size="sm"
+                    w="80px"
+                    fontSize="13px"
+                    borderRadius="20px"
+                    _hover={{ bg: "blue.200" }}
+                    onClick={onClose}
+                  >
+                    Post
+                  </Button>
+                </Box>
+
+                <Box display="flex" justifyContent="center">
+                  <Image src="" />
+                </Box>
+              </form>
+            </Box>
+          </ModalContent>
+        </Modal>
       </Box>
     </>
   );

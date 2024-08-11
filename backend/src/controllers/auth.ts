@@ -45,7 +45,7 @@ async function register(req: Request, res: Response) {
     const fullURL = req.protocol + "://" + req.get("host");
 
     const info = await transporter.sendMail({
-      from: "Circle App <tiyooigustyy@gmail.com>",
+      from: "Circle App <agikgigih98@gmail.com>",
       to: register.email,
       subject: "Register Success ✔",
       html: `<h1>Welcome to Circle</h1>
@@ -96,4 +96,59 @@ async function verify(req: Request, res: Response) {
   }
 }
 
-export default { login, register, check, verify };
+async function requestPasswordReset(req: Request, res: Response) {
+  try {
+    const { email } = req.body;
+    const user = await AuthService.findUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    const fullURL = req.protocol + "://" + req.get("host");
+
+    await transporter.sendMail({
+      from: "Circle App <agikgigih98@gmail.com>",
+      to: email,
+      subject: "Password Reset Request",
+      html: `<h1>Reset Your Password</h1>
+            <p>To reset your password, please click the following link: </p>
+            <button style="padding: 10px; background: rgb(0, 142, 236); border-radius: 10px; border: none;">
+              <a href="${fullURL}/api/v1/auth/reset-password?token=${token}" style="color: white; text-decoration: none">Reset Password</a>
+            </button>`,
+    });
+
+    await AuthService.createVerification(token, "FORGOT_PASSWORD");
+
+    res.status(200).json({ message: "Password reset email sent" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+// Fungsi untuk mengatur ulang password
+async function resetPassword(req: Request, res: Response) {
+  try {
+    const { token, newPassword } = req.body;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
+      userId: number;
+    };
+
+    await AuthService.resetPassword(decoded.userId, newPassword);
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export default {
+  login,
+  register,
+  check,
+  verify,
+  requestPasswordReset,
+  resetPassword,
+};

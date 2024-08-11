@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { CreateThreadDTO, UpdatedThreadDTO } from "../dto/thread-dto";
 import { createThreadSchema } from "../validators/thread";
 import { v2 as cloudinary } from "cloudinary";
+import { upload } from "../middlewares/upload-file";
 
 const prisma = new PrismaClient();
 
@@ -17,7 +18,9 @@ async function find() {
             photoProfile: true,
           },
         },
+        _count: { select: { likes: true, replies: true } },
       },
+      orderBy: {createdAt: "desc"}
     });
   } catch (error) {
     throw new String(error);
@@ -37,6 +40,7 @@ async function findOne(id: number) {
             photoProfile: true,
           },
         },
+        _count: { select: { likes: true, replies: true } },
       },
     });
 
@@ -61,12 +65,17 @@ async function create(dto: CreateThreadDTO, userId: number) {
       api_secret: process.env.CLOUDINARY_API_SECRET,
     });
 
-    const upload = await cloudinary.uploader.upload(dto.image, {
-      upload_preset: "circle",
-    });
+    let imageURL;
+
+    if (dto.image) {
+      const upload = await cloudinary.uploader.upload(dto.image, {
+        upload_preset: "circle",
+      });
+      imageURL = upload.secure_url;
+    }
 
     return await prisma.thread.create({
-      data: { ...dto, userId, image: upload.secure_url },
+      data: { ...dto, userId, image: imageURL },
     });
   } catch (error) {
     throw new String(error);
@@ -86,9 +95,24 @@ async function update(id: number, dto: UpdatedThreadDTO) {
       thread.image = dto.image;
     }
 
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+
+    let imageURL;
+
+    if (dto.image) {
+      const upload = await cloudinary.uploader.upload(dto.image, {
+        upload_preset: "circle",
+      });
+      imageURL = upload.secure_url;
+    }
+
     return await prisma.thread.update({
       where: { id: Number(id) },
-      data: { ...thread },
+      data: { ...thread, image: imageURL },
     });
   } catch (error) {
     throw new String(error);

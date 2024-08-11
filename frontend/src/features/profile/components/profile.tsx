@@ -9,7 +9,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -18,20 +18,32 @@ import { MyThread } from "./my-thread";
 import { MyMedia } from "./my-media";
 import { Link } from "react-router-dom";
 
-
 export function Profile() {
   const currentUser = useSelector((state: RootState) => state.auth.user);
+  // console.log("ini data current user", currentUser);
 
   return (
     <>
-      <Box color="white" w="600px" borderRight="1px solid grey" borderLeft="1px solid grey">
-        <Heading fontSize="20px" color="white" display="flex" alignItems="center">
-        <Button bg="transparent" _hover={{ bg: "transparent" }} color="white"><FaArrowLeft /></Button> Agik Gigih Sulistyo
-        </Heading>
-        <Box
+      <Box
+        color="white"
+        w="600px"
+        borderRight="1px solid grey"
+        borderLeft="1px solid grey"
+      >
+        <Heading
+          fontSize="20px"
           color="white"
-          p="10px"
+          display="flex"
+          alignItems="center"
         >
+          <Button bg="transparent" _hover={{ bg: "transparent" }} color="white">
+            <Link to={"/home"}>
+              <FaArrowLeft />
+            </Link>
+          </Button>{" "}
+          {currentUser.fullName}
+        </Heading>
+        <Box color="white" p="10px">
           <Box w="100%" display="flex" flexDir="column" alignItems="center">
             <Box
               w="100%"
@@ -74,29 +86,50 @@ export function Profile() {
             <Text fontSize="14px" py="10px">
               {currentUser.bio}
             </Text>
-            <Text fontWeight="bold" fontSize="14px">
-              2342 <span style={{ fontWeight: "normal" }}>Following</span> 3453{" "}
-              <span style={{ fontWeight: "normal" }}>Followers</span>
-            </Text>
+            <Box display="flex" alignItems="center" gap="10px">
+              {currentUser?._count?.followed ? (
+                <Text fontWeight="bold" fontSize="14px">
+                  {currentUser?._count?.followed}
+                  <span style={{ fontWeight: "normal" }}> Following</span>{" "}
+                </Text>
+              ) : (
+                <Text fontWeight="bold" fontSize="14px">
+                  0<span style={{ fontWeight: "normal" }}> Following</span>{" "}
+                </Text>
+              )}
+
+              {currentUser?._count?.followers ? (
+                <Text fontWeight="bold" fontSize="14px">
+                  {currentUser?._count?.followers}
+                  <span style={{ fontWeight: "normal" }}> Following</span>{" "}
+                </Text>
+              ) : (
+                <Text fontWeight="bold" fontSize="14px">
+                  0<span style={{ fontWeight: "normal" }}> Following</span>{" "}
+                </Text>
+              )}
+            </Box>
           </Box>
         </Box>
 
-      <Box color="white" p="10px" w="600px">
-        <Tabs isFitted variant="enclosed">
-          <TabList mb="1em">
-            <Tab>All Post</Tab>
-            <Tab>Media</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              <MyThread />
-            </TabPanel>
-            <TabPanel>
-              <MyMedia />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Box>
+        <Box color="white" p="10px" w="600px">
+          <Tabs isFitted variant="enclosed">
+            <TabList mb="1em">
+              <Tab>All Post</Tab>
+              <Tab>Media</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <MyThread />
+              </TabPanel>
+              <TabPanel>
+                <Box display="flex" gap="10px" flexWrap="wrap">
+                  <MyMedia />
+                </Box>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </Box>
       </Box>
     </>
   );

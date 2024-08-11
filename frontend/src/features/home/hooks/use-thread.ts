@@ -4,6 +4,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { api } from "../../../libs/api";
 import { ThreadEntity } from "../entities/thread";
 import { CreateThreadDTO } from "../types/thread";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createThreadSchema } from "../validators/thread";
+import { useState } from "react";
 
 export const useThread = () => {
   const { data: threads, refetch } = useQuery<ThreadEntity[]>({
@@ -13,12 +16,22 @@ export const useThread = () => {
 
   const { register, handleSubmit } = useForm<CreateThreadDTO>({
     mode: "onSubmit",
-    // resolver: zodResolver(createThreadSchema),
+    resolver: zodResolver(createThreadSchema),
   });
 
   async function getThreads() {
     const response = await api.get("/threads");
     return response.data;
+  }
+
+  const [imagePreview, setImagePreview] = useState<string>("")
+
+  function onImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files
+
+    if(files?.length) {
+      setImagePreview(URL.createObjectURL(files[0]))
+    }
   }
 
   const { mutateAsync } = useMutation<
@@ -28,8 +41,12 @@ export const useThread = () => {
   >({
     mutationFn: (newThread) => {
       const formData = new FormData();
+      console.log(newThread);
+      
       formData.append("content", newThread.content);
-      formData.append("image", newThread.image[0]);
+      if(newThread.image[0]) {
+        formData.append("image", newThread.image[0]);
+      }
       return api.post("/threads", formData);
     },
   });
@@ -43,5 +60,5 @@ export const useThread = () => {
     }
   };
 
-  return { threads, register, handleSubmit, onSubmit };
+  return { imagePreview, onImageChange, threads, register, handleSubmit, onSubmit };
 };

@@ -38,16 +38,17 @@ model User {
 
 model Follow {
   id         Int  @id @default(autoincrement())
-  followedId Int?
-  followerId Int?
+  followedId Int
+  followerId Int
 
-  followed User? @relation("followed", fields: [followedId], references: [id])
-  follower User? @relation("follower", fields: [followerId], references: [id])
+  followed User @relation("followed", fields: [followedId], references: [id])
+  follower User @relation("follower", fields: [followerId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
   @@map("follows")
+  @@unique([followedId, followerId])
 }
 
 model Thread {

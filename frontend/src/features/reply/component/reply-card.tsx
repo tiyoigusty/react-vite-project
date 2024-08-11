@@ -46,7 +46,7 @@ export function ReplyCard() {
             </Text>
             <GoDotFill fontSize="8px" />
             <Text fontSize="14px" fontWeight="light">
-              5 hour
+              {thread?.time}
             </Text>
           </Box>
           <Text fontSize="14px" p="5px 0">

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import UserService from "../services/user";
+import FollowService from "../services/follow";
 
 async function find(req: Request, res: Response) {
   try {
@@ -43,4 +44,16 @@ async function update(req: Request, res: Response) {
   }
 }
 
-export default { find, findOne, update };
+async function cekFollow(req: Request, res: Response) {
+  try {
+    const { followerId, followedId } = req.params;
+    const user = await FollowService.isFollowing(Number(followerId), Number(followedId));
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+}
+
+export default { find, findOne, update, cekFollow };

@@ -18,7 +18,7 @@ async function login(dto: LoginDTO) {
     const user = await prisma.user.findUnique({
       where: { email: dto.email },
     });
-    if(!user.isVerified) {
+    if (!user.isVerified) {
       throw new Error("USER NOT VERIFIED!!");
     }
     if (!user) {
@@ -94,4 +94,35 @@ async function verify(token: string) {
   }
 }
 
-export default { login, register, createVerification, verify };
+async function findUserByEmail(email: string) {
+  try {
+    return await prisma.user.findUnique({
+      where: { email },
+    });
+  } catch (error) {
+    throw new Error("Error finding user");
+  }
+}
+
+async function resetPassword(userId: number, newPassword: string) {
+  try {
+    const salt = 10;
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { password: hashedPassword },
+    });
+  } catch (error) {
+    throw new Error("Error resetting password");
+  }
+}
+
+export default {
+  login,
+  register,
+  createVerification,
+  verify,
+  findUserByEmail,
+  resetPassword,
+};

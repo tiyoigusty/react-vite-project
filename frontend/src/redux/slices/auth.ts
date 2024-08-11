@@ -8,6 +8,7 @@ interface User {
   photoProfile: string;
   bio: string;
   background: string;
+  _count: {followed: number, followers: number}
 }
 
 export interface AuthState {
@@ -23,6 +24,7 @@ const initialState: AuthState = {
     photoProfile: "",
     bio: "",
     background: "",
+    _count: {followed: 0, followers: 0}
   },
 };
 

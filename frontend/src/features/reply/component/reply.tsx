@@ -3,6 +3,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { PostReply } from "./post-reply";
 import { ReplyCard } from "./reply-card";
 import { ReplyPerson } from "./reply-person";
+import { Link } from "react-router-dom";
 
 export function Reply() {
   return (
@@ -15,7 +16,9 @@ export function Reply() {
           alignItems="center"
         >
           <Button bg="transparent" _hover={{ bg: "transparent" }} color="white">
-            <FaArrowLeft />
+            <Link to={"/home"}>
+              <FaArrowLeft />
+            </Link>
           </Button>{" "}
           Status
         </Heading>

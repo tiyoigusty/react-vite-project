@@ -1,10 +1,12 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { useThread } from "../hooks/use-thread";
-import { Post } from "./post";
+import { Post } from "./post copy";
 import { ThreadCard } from "./thread";
 
 export function Home() {
   const { threads } = useThread();
+  console.log(threads);
+  
 
   return (
     <>

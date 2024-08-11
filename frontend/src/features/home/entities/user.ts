@@ -5,6 +5,8 @@ export type UserEntity = {
   email: string;
   photoProfile: string;
   bio: string;
+  background: string;
+  _count: {followed: number, followers: number}
   createdAt: Date;
   updatedAt: Date;
 };
