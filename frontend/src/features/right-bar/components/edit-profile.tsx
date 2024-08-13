@@ -15,16 +15,11 @@ import { Link } from "react-router-dom";
 
 export function EditProfile() {
   const currentUser = useSelector((state: RootState) => state.auth.user);
-  const { handleSubmit, onSubmit, register } = useProfile();
+  const { handleSubmit, onSubmit, register } = useProfile(currentUser.id);
 
   return (
-    <Box w="500px" m="60px auto" >
-      <Box
-        color="white"
-        bg="rgb(40, 40, 40)"
-        borderRadius="10px"
-        p="10px"
-      >
+    <Box w="500px" m="60px auto">
+      <Box color="white" bg="rgb(40, 40, 40)" borderRadius="10px" p="10px">
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Heading fontSize="20px" color="white" p="10px 0">
             Edit Profile
@@ -36,8 +31,10 @@ export function EditProfile() {
               color="white"
               _hover={{ bg: "transparent" }}
             >
-                <LinkBox>
-                <Link to={"/home"}><FaRegTimesCircle fontSize="20px" /></Link>
+              <LinkBox>
+                <Link to={"/home"}>
+                  <FaRegTimesCircle fontSize="20px" />
+                </Link>
               </LinkBox>
             </Button>
           </Box>
@@ -59,7 +56,7 @@ export function EditProfile() {
                   cursor: "pointer",
                   position: "absolute",
                   top: "85px",
-                  left: "610px"
+                  left: "610px",
                 }}
               >
                 <Box
