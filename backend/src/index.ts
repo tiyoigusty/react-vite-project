@@ -1,24 +1,21 @@
-import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
-import ThreadController from "./controllers/thread";
-import AuthController from "./controllers/auth";
-import UserController from "./controllers/user";
-import ReplyController from "./controllers/reply";
-import ProfileController from "./controllers/profile";
-import LikeController from "./controllers/like";
-import FollowController from "./controllers/follow";
 import dotenv from "dotenv";
-import { upload } from "./middlewares/upload-file";
-import { authenticate } from "./middlewares/auth";
+import express, { Request, Response } from "express";
 import swaggerUI from "swagger-ui-express";
 import swaggerDoc from "../swagger/swagger-output.json";
-import { initializeRedisClient, redisClient } from "./libs/redis";
-import { rateLimit } from "express-rate-limit";
-import { RedisStore } from "rate-limit-redis";
+import AuthController from "./controllers/auth";
+import FollowController from "./controllers/follow";
+import LikeController from "./controllers/like";
+import ProfileController from "./controllers/profile";
+import ReplyController from "./controllers/reply";
+import ThreadController from "./controllers/thread";
+import UserController from "./controllers/user";
+import { authenticate } from "./middlewares/auth";
+import { upload } from "./middlewares/upload-file";
 
 dotenv.config();
 
-export const app = express();
+const app = express();
 const port = process.env.PORT || 5000;
 const routerv1 = express.Router();
 const routerv2 = express.Router();
