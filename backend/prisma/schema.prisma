@@ -21,7 +21,7 @@ model User {
   password     String
   photoProfile String?
   bio          String?
-  background  String @default("https://images.pexels.com/photos/4439410/pexels-photo-4439410.jpeg?auto=compress&cs=tinysrgb&w=600")
+  background   String  @default("https://images.pexels.com/photos/4439410/pexels-photo-4439410.jpeg?auto=compress&cs=tinysrgb&w=600")
   isVerified   Boolean @default(false)
 
   threads   Thread[]
@@ -37,7 +37,7 @@ model User {
 }
 
 model Follow {
-  id         Int  @id @default(autoincrement())
+  id         Int @id @default(autoincrement())
   followedId Int
   followerId Int
 
@@ -47,8 +47,8 @@ model Follow {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  @@map("follows")
   @@unique([followedId, followerId])
+  @@map("follows")
 }
 
 model Thread {
@@ -99,10 +99,10 @@ model Like {
 }
 
 model Verification {
-  id       Int  @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  token String @unique
-  type VerificationType @default(EMAIL)
+  token String           @unique
+  type  VerificationType @default(EMAIL)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
